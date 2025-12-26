@@ -1,0 +1,34 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+data = {
+    "Order_ID": [101, 102, 103, 104, 105, 106, 107],
+    "Item_Name": ["Burger", "Pizza", "Burger", "Momos", "Pizza", "Burger", "Pasta"],
+    "Quantity": [2, 1, 1, 3, 2, 2, 1]
+}
+
+df = pd.DataFrame(data)
+df
+df.to_csv("orders.csv", index=False)
+df = pd.read_csv("orders.csv")
+df
+df.info()
+df.isnull().sum()
+item_group = df.groupby("Item_Name")["Quantity"].sum()
+item_group
+popularity_ranking = item_group.sort_values(ascending=False)
+popularity_ranking
+top_5_items = popularity_ranking.head(5)
+top_5_items
+plt.figure(figsize=(8,5))
+popularity_ranking.plot(kind="bar")
+plt.title("Menu Item Popularity")
+plt.xlabel("Food Item")
+plt.ylabel("Total Quantity Ordered")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+least_popular = popularity_ranking.tail(3)
+least_popular
+print("Top Selling Item:", popularity_ranking.idxmax())
+print("Least Selling Item:", popularity_ranking.idxmin())
+print("Total Items:", popularity_ranking.count())
